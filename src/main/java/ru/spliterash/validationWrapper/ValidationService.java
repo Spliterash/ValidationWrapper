@@ -4,15 +4,22 @@ import lombok.RequiredArgsConstructor;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.lang.reflect.Method;
 import java.util.Set;
 
 @RequiredArgsConstructor
 public class ValidationService {
     private final Validator validator;
 
-    public <O> ValidationResult<O> validate(O o) {
-        Set<ConstraintViolation<O>> validate = validator.validate(o);
+    public <O> ValidationResult<O> validateMethod(O obj, Method method, Object[] params) {
+        return wrap(validator.forExecutables().validateParameters(obj, method, params));
+    }
 
+    public <O> ValidationResult<O> validateObject(O o) {
+        return wrap(validator.validate(o));
+    }
+
+    public <O> ValidationResult<O> wrap(Set<ConstraintViolation<O>> validate) {
         // Всё чики пуки
         if (validate.isEmpty())
             return ValidationResult.success();

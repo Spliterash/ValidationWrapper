@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id "io.freefair.lombok" version "5.1.1"
+    id "maven-publish"
+}
+
+group 'ru.spliterash'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'javax.validation:validation-api:2.0.1.Final'
+}
+
+apply from: "https://gradle.spliterash.ru/maven-publish.gradle"
+
+ext {
+    mavenArtifactId = "validation-wrapper"
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+
+            repositories {
+                maven {
+                    name = "nexus"
+                    url = "https://nexus.spliterash.ru/repository/validation-wrapper"
+                    credentials {
+                        username = project.property("splitNexusUser") as String
+                        password = project.property("splitNexusPassword") as String
+                    }
+                }
+            }
+        }
+    }
+}

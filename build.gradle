@@ -29,7 +29,7 @@ publishing {
             repositories {
                 maven {
                     name = "nexus"
-                    url = "https://nexus.spliterash.ru/repository/validation-wrapper"
+                    url = "https://repo.spliterash.ru/validation-wrapper"
                     credentials {
                         username = project.property("splitNexusUser") as String
                         password = project.property("splitNexusPassword") as String
